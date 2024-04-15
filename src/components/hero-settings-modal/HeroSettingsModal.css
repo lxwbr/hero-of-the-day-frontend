@@ -1,0 +1,23 @@
+.container > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.setting {
+    display: flex;
+}
+
+.setting > *:not(:last-child) {
+    margin-right: 10px;
+}
+
+.members > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.member {
+    display: flex;
+}
+
+.member > *:not(:last-child) {
+    margin-right: 10px;
+}

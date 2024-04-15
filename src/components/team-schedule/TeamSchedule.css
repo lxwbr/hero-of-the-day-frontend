@@ -1,0 +1,197 @@
+.events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.events .ant-badge-status {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.notes-month {
+  text-align: center;
+  font-size: 28px;
+}
+.notes-month section {
+  font-size: 28px;
+}
+
+.buttons-container > * {
+  margin-left: 6px;
+}
+
+.repeat {
+  margin-bottom: 5px;
+  margin-right: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.day {
+  height: inherit;
+}
+
+.ant-tag {
+  background-color: #1DA57A;
+  border-color: #A4DBC9;
+  color: #E8F6F1;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.ant-tag .anticon-close {
+  color: #E8F6F1;
+}
+
+.ant-tag .anticon-close:hover {
+  color: #A4DBC9;
+}
+
+.add {
+  background: rgba(232, 246, 241, 0.24);
+  border-style: dashed;
+  font-weight: normal;
+  color: #A4DBC9;
+  cursor: pointer;
+}
+
+.main-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag-green {
+  background-color: #1DA57A;
+  border-color: #A4DBC9;
+  color: #E8F6F1;
+}
+
+.tag-green-inverted {
+  color: #1DA57A;
+  border-color: #A4DBC9;
+  background-color: #E8F6F1;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-orange {
+  background-color: #f58231;
+  border-color: #fdf5c2;
+  color: #fdf5c2;
+}
+
+.tag-orange-inverted {
+  background-color: #fdf5c2;
+  border-color: #f58231;
+  color: #f58231;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-blue {
+  background-color: #4363d8;
+  border-color: #dfe6ff;
+  color: #dfe6ff;
+}
+
+.tag-blue-inverted {
+  background-color: #dfe6ff;
+  border-color: #4363d8;
+  color: #4363d8;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-pink {
+  background-color: #fd6da2;
+  border-color: #fce4ec;
+  color: #fce4ec;
+}
+
+.tag-pink-inverted {
+  background-color: #fce4ec;
+  border-color: #fd6da2;
+  color: #fd6da2;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-brown {
+  background-color: #9A6324;
+  border-color: #faeddf;
+  color: #faeddf;
+}
+
+.tag-brown-inverted {
+  background-color: #faeddf;
+  border-color: #9A6324;
+  color: #9A6324;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-teal {
+  background-color: #36d3c1;
+  border-color: #e5fdfa;
+  color: #e5fdfa; 
+}
+
+.tag-teal-inverted {
+  background-color: #e5fdfa;
+  border-color: #36d3c1;
+  color: #36d3c1;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-purple {
+  background-color: #911eb4;
+  border-color: #ecc9f7;
+  color: #ecc9f7;
+}
+
+.tag-purple-inverted {
+  background-color: #ecc9f7;
+  border-color: #911eb4;
+  color: #911eb4;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-navy {
+  background-color: #000075;
+  border-color: #d8d8ff;
+  color: #d8d8ff;
+}
+
+.tag-navy-inverted {
+  background-color: #d8d8ff;
+  border-color: #000075;
+  color: #000075;
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.tag-black {
+  background-color: #3b3b3b;
+  border-color: #d4d4d4;
+  color: #d4d4d4;
+}
+
+.tag-black-inverted {
+  background-color: #d4d4d4;
+  border-color: #3b3b3b;
+  color: #3b3b3b;
+  opacity: 0.7;
+  border-style: dashed;
+}

@@ -1,0 +1,11 @@
+.members > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.member {
+    display: flex;
+}
+
+.member > *:not(:last-child) {
+    margin-right: 10px;
+}
