@@ -6,10 +6,10 @@ import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
 interface InfraProps extends cdk.StackProps {
-  hostedZoneName: string;
-  stage: string;
-  certArn: string;
-  hostedZoneId: string;
+  HOSTED_ZONE_NAME: string;
+  STAGE: string;
+  CERT_ARN: string;
+  HOSTED_ZONE_ID: string;
 }
 
 export class InfraStack extends cdk.Stack {
@@ -17,7 +17,7 @@ export class InfraStack extends cdk.Stack {
     super(scope, id, props);
 
     const bucket = new s3.Bucket(this, 'HeroOfTheDayStaticPageBucket', {
-      bucketName: `hero-of-the-day-frontend-${props.stage}`,
+      bucketName: `hero-of-the-day-frontend-${props.STAGE}`,
       accessControl: s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
       encryption: s3.BucketEncryption.S3_MANAGED,
       versioned: true
@@ -31,7 +31,7 @@ export class InfraStack extends cdk.Stack {
 
     const distribution = new cloudfront.CfnDistribution(this, 'HeroOfTheDayCloudFrontDistribution', {
       distributionConfig: {
-        aliases: [props.hostedZoneName],
+        aliases: [props.HOSTED_ZONE_NAME],
         origins: [
           {
             domainName: bucket.bucketDomainName,
@@ -59,29 +59,29 @@ export class InfraStack extends cdk.Stack {
         httpVersion: 'http2',
         viewerCertificate: {
           minimumProtocolVersion: 'TLSv1.2_2018',
-          acmCertificateArn: props.certArn,
+          acmCertificateArn: props.CERT_ARN,
           sslSupportMethod: 'sni-only'
         }
       }
     });
 
     new route53.CfnRecordSetGroup(this, 'HeroOfTheDayAliasRecord', {
-      hostedZoneName: props.hostedZoneName + '.',
+      hostedZoneName: props.HOSTED_ZONE_NAME + '.',
       recordSets: [
         {
-          name: props.hostedZoneName + '.',
+          name: props.HOSTED_ZONE_NAME + '.',
           type: 'A',
           aliasTarget: {
             dnsName: distribution.attrDomainName,
-            hostedZoneId: props.hostedZoneId
+            hostedZoneId: props.HOSTED_ZONE_ID
           }
         },
         {
-          name: props.hostedZoneName + '.',
+          name: props.HOSTED_ZONE_NAME + '.',
           type: 'AAAA',
           aliasTarget: {
             dnsName: distribution.attrDomainName,
-            hostedZoneId: props.hostedZoneId
+            hostedZoneId: props.HOSTED_ZONE_ID
           }
         }
       ]
