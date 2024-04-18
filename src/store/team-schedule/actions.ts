@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { FETCH_TEAM_SCHEDULE, FETCH_HERO_MEMBERS, DUTY_REMOVED, START_FETCHING_TEAM_SCHEDULE, TeamScheduleTypes, Duty, SELECT_DATE, VISIBILITY_ASSIGNMENT_MODAL, DUTY_ADDED, MEMBER_REMOVED, RepeatedDuty, Member } from './types'
+import { FETCH_TEAM_SCHEDULE, FETCH_HERO_MEMBERS, DUTY_REMOVED, START_FETCHING_TEAM_SCHEDULE, TeamScheduleTypes, Duty, SELECT_DATE, VISIBILITY_ASSIGNMENT_MODAL, DUTY_ADDED, MEMBER_REMOVED, Member } from './types'
 
 export function pendingScheduleFetched(pending: boolean): TeamScheduleTypes {
   return {

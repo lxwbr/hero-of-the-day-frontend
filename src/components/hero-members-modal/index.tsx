@@ -1,4 +1,4 @@
-import { Modal, Button, Input, message } from 'antd'
+import { Modal, Button, Input } from 'antd'
 import React from 'react'
 import { AppState } from '../../store'
 import { connect } from 'react-redux'

@@ -162,10 +162,6 @@ const mapStateToProps = (state: AppState): StateProps => ({
 
 const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
-const onlyUnique = (value: string, index: number, array: string[]) => {
-  return array.indexOf(value) === index;
-}
-
 const dateCellRender = (duties: Duty[], removeHeroAssignment: (email: string, date: moment.Moment) => void, showRepeatableModal: () => void, userEmail?: string) => (value: moment.Moment) => {
   const colors = ['green', 'orange', 'blue', 'purple', 'black', 'pink', 'teal', 'brown', 'navy']
 
@@ -187,7 +183,7 @@ const dateCellRender = (duties: Duty[], removeHeroAssignment: (email: string, da
 
     const names = Array.from(map.values())
     map.forEach((v, k, m) => {
-      if (names.filter(n => n == v).length > 1) {
+      if (names.filter(n => n === v).length > 1) {
         const iLastName = k.indexOf('.')
         m.set(k, `${capitalizeFirstLetter(v)} ${capitalizeFirstLetter(k.substring(iLastName + 1, iLastName + 2))}`)
       } else {
@@ -220,7 +216,7 @@ const dateCellRender = (duties: Duty[], removeHeroAssignment: (email: string, da
     if (duty.repeats > diff) {
       return false
     } else {
-      return diff > 0 && diff % duty.repeats == 0
+      return diff > 0 && diff % duty.repeats === 0
     }
   }) : undefined
 
@@ -245,7 +241,7 @@ const dateCellRender = (duties: Duty[], removeHeroAssignment: (email: string, da
         const sub = diff % cur.repeats
         const earliest = value.clone().subtract(sub, 'days')
 
-        if (acc == null || cur.day.isBefore(value, 'day') && earliest.isAfter(acc.m, 'day')) {
+        if (acc == null || (cur.day.isBefore(value, 'day') && earliest.isAfter(acc.m, 'day'))) {
           return { d: cur, m: earliest }
         } else {
           return acc
@@ -280,7 +276,7 @@ const dateCellRender = (duties: Duty[], removeHeroAssignment: (email: string, da
       }
       {repeatedFlag ? <Button className='repeat' type={foundDuty.repeats ? 'danger' : 'primary'} onClick={e => {
         e.stopPropagation()
-        if (userEmail == 'alex@test.io') {
+        if (userEmail === 'alex@test.io') {
           showRepeatableModal()
         } else {
           message.warn('Sorry, this feature is currently beta tested.')
@@ -302,7 +298,7 @@ const dateCellRender = (duties: Duty[], removeHeroAssignment: (email: string, da
         })}
         <Button className='repeat' type='dashed' onClick={e => {
         e.stopPropagation()
-        if (userEmail == 'alex@test.io') {
+        if (userEmail === 'alex@test.io') {
           showRepeatableModal()
         } else {
           message.warn('Sorry, this feature is currently beta tested.')

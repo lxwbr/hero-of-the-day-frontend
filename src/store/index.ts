@@ -7,6 +7,7 @@ import { createHeroModalReducer } from './create-hero-modal/reducers'
 import { heroMembersModalReducer } from './hero-members-modal/reducers'
 import { repeatModalReducer } from './repeat-modal/reducers'
 import { heroSettingsModalReducer } from './hero-settings-modal/reducers'
+import { releaseNotesModalReducer } from './release-notes-modal/reducers'
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -16,7 +17,8 @@ export const rootReducer = combineReducers({
   createHero: createHeroModalReducer,
   heroMembersModal: heroMembersModalReducer,
   heroSettingsModal: heroSettingsModalReducer,
-  repeatModal: repeatModalReducer
+  repeatModal: repeatModalReducer,
+  releaseNotesModal: releaseNotesModalReducer
 })
 
 export type AppState = ReturnType<typeof rootReducer>

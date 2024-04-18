@@ -50,10 +50,10 @@ export function heroesReducer(
       }
     case HERO_DELETED:
       console.log(`before: ${JSON.stringify(state.heroes.map(a => a.name))}`)
-      console.log(`after: ${JSON.stringify(state.heroes.filter(({name}) => name != action.hero.name).map(a => a.name))}`)
+      console.log(`after: ${JSON.stringify(state.heroes.filter(({name}) => name !== action.hero.name).map(a => a.name))}`)
       return {
         ...state,
-        heroes: state.heroes.filter(({name}) => name != action.hero.name)
+        heroes: state.heroes.filter(({name}) => name !== action.hero.name)
       }
     default:
       return state

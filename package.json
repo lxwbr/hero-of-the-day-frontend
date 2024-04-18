@@ -35,7 +35,7 @@
     "typescript": "3.4.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider REACT_APP_MS_CLIENT_ID='REACT_APP_MS_CLIENT_ID' REACT_APP_MS_TENANT_URL='REACT_APP_MS_TENANT_URL' REACT_APP_MS_REDIRECT_URI='REACT_APP_MS_REDIRECT_URI' react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",

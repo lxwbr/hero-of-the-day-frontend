@@ -10,6 +10,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { openCreateHeroModal, selectHero } from '../../store/heroes-list/actions'
 import './HeroesList.css'
 import { changeMembers } from '../../store/create-hero-modal/actions'
+import ReleaseNotesModal from '../release-notes-modal'
 
 type Props = ExternalProps & DispatchProps & InternalProps
 
@@ -111,6 +112,7 @@ class HeroesList extends React.Component<Props> {
             </div>
           </div>
           {createHeroModalVisible ? <CreateHeroModal userEmail={userEmail}/> : <div/>}
+          {<ReleaseNotesModal/>}
         </div>
       )
     }    

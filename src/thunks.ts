@@ -1,13 +1,11 @@
 import { message } from 'antd'
 import { Action, ActionCreator } from 'redux'
 import request from 'request'
-import axios from 'axios'
 import { scheduleFetched, pendingScheduleFetched, dutyAdded, dutyRemvoed as dutyRemoved, heroFetched, heroMemberRemoved } from './store/team-schedule/actions'
 import { heroCreated, heroDeleted, heroesFetched, pendingHeroesFetched } from './store/heroes-list/actions'
 import { AppState } from './store'
 import { ThunkAction } from 'redux-thunk'
 import getOptions from './http/request-options'
-import getAxiosOptions from './http/axios-options'
 import moment from 'moment-timezone'
 import bmoment from 'moment-business-days'
 
@@ -94,7 +92,7 @@ export const thunkFetchHero: ActionCreator<ThunkAction<Promise<Action>, AppState
         } else {
           const { members, channel }: { members: string[], channel?: string } = JSON.parse(body)
           request.get(`${originV2}/hero/${heroHandle}/punch-clock/stats`, getOptions(), (punchError, punchResponse, punchBody) => {
-            if (punchError == null && punchResponse.statusCode == 200) {
+            if (punchError == null && punchResponse.statusCode === 200) {
               const { punch_cards, current_schedule }: {
                 punch_cards: Array<{ days: number, first_punch: number, last_punch: number, member: string }>,
                 current_schedule: { assignees: string[], shift_start_time: string }
@@ -102,7 +100,7 @@ export const thunkFetchHero: ActionCreator<ThunkAction<Promise<Action>, AppState
               resolve(dispatch(
                 heroFetched({ members:
                   members.map(name => {
-                    const existingPunchCard = punch_cards.find(punchCard => punchCard.member == name)
+                    const existingPunchCard = punch_cards.find(punchCard => punchCard.member === name)
                     if (existingPunchCard != null) {
                       let daysSinceFirstDuty = bmoment().businessDiff(bmoment(existingPunchCard.first_punch * 1000))
   
