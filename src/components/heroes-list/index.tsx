@@ -73,7 +73,7 @@ class HeroesList extends React.Component<Props> {
         <div className="main-container">
           <PageHeader
             className="site-page-header"
-            title={userName ? `Hello, ${userName}!` : 'Heroes'}
+            title={userName ? `Moin, ${userName}!` : 'Heroes'}
             subTitle="Click on a hero handle to reveal the schedule"
             extra={
               <div className="buttons-container">
