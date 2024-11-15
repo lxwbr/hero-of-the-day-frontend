@@ -1,28 +1,21 @@
-import React from 'react'
-import SignInPage from './components/sign-in-page'
+import React from 'react';
+import type { FC } from 'react';
+import { theme } from 'antd';
 import TeamSchedule from './components/team-schedule'
-import HeroesList from './components/heroes-list'
-import './App.css'
-import { AppState } from './store'
-import { AuthState } from './store/auth/types'
-import { connect } from 'react-redux'
+import 'antd/dist/reset.css';
+import { ConfigProvider } from 'antd';
+import './App.css';
 
-const mapStateToProps = (state: AppState): AppProps => ({
-  auth: state.auth,
-  selectedHero: state.heroes.selectedHero
-})
+const App: FC = () => 
+  <ConfigProvider
+    theme={{
+      algorithm: theme.darkAlgorithm,
+      token: {
+        colorPrimary: "#1da57a",
+        colorBgBase: "#282c34",
+      }
+    }}>
+    <TeamSchedule/>
+  </ConfigProvider>
 
-interface AppProps {
-  auth: AuthState,
-  selectedHero?: string
-}
-
-const App: React.FC<AppProps> = ({ auth, selectedHero }) =>
-  <div className="App">
-    <header className="App-header">
-    {(auth.gapiAuthResponse || auth.id_token) ? (selectedHero ? <TeamSchedule heroHandle={selectedHero} /> : <HeroesList userEmail={auth.userEmail} userName={auth.userName}/>) : <SignInPage/>}
-    </header>
-  </div>
-  
-
-export default connect(mapStateToProps)(App)
+export default App;
