@@ -1,44 +1,93 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Hello World - Next.js + TypeScript + Mantine
 
-## Available Scripts
+A simple web application built with Next.js, TypeScript, and Mantine UI.
 
-In the project directory, you can run:
+## 🚀 Technology Stack
 
-### `npm start`
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **UI Library**: Mantine v7
+- **Styling**: Tailwind CSS
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 📋 Prerequisites
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+- Node.js 18+ 
+- npm or yarn package manager
 
-### `npm test`
+## 🛠️ Installation
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd hero-of-the-day-frontend
+```
 
-### `npm run build`
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Start the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📁 Project Structure
 
-### `npm run eject`
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx         # Root layout with Mantine provider
+│   ├── page.tsx           # Hello World page
+│   └── globals.css        # Global styles
+└── components/            # Reusable components (empty for now)
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 📝 Available Scripts
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 🎯 Features
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- **Simple Setup**: Minimal configuration for quick development
+- **Type Safety**: Full TypeScript support
+- **Modern UI**: Built with Mantine v7 components
+- **Responsive Design**: Mobile-first approach
 
-## Learn More
+## 🚀 Deployment
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Vercel (Recommended)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy automatically
+
+### Other Platforms
+
+The project can be deployed to any platform that supports Next.js:
+
+- Netlify
+- AWS Amplify
+- Railway
+- DigitalOcean App Platform
+
+## 📚 Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Mantine Documentation](https://mantine.dev/)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+
+## 📄 License
+
+This project is licensed under the MIT License. 
