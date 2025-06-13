@@ -142,7 +142,6 @@ export function Calendar({ hero }: CalendarProps) {
         minWidth: '100vw',
         height: '100vh',
         width: '100vw',
-        background: '#23272f',
         color: '#e0e0e0',
         display: 'flex',
         flexDirection: 'column',

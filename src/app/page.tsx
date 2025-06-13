@@ -1,5 +1,5 @@
-import { Calendar } from '@/components/Calendar'
+import { HeroList } from '@/components/HeroList'
 
 export default function HomePage() {
-  return <Calendar hero="default-hero" />
+  return <HeroList />
 } 
