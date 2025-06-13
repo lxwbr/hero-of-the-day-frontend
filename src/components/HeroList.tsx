@@ -19,7 +19,7 @@ function HeroColumn({ heroes, title }: { heroes: string[]; title: string }) {
             textAlign: 'left',
           }}
         >
-          <Link href={`/hero/${hero}`} style={{ textDecoration: 'none' }}>
+          <Link href={`/${hero}`} style={{ textDecoration: 'none' }}>
             <span style={{ color: '#36b37e', fontSize: '14px', fontWeight: 400, cursor: 'pointer' }}>{hero}</span>
           </Link>
         </Box>

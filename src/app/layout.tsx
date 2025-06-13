@@ -3,6 +3,9 @@ import '@mantine/core/styles.css'
 import './globals.css'
 import MSWInit from './msw-client-init'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
   title: 'Hello World',
   description: 'A simple Next.js application',

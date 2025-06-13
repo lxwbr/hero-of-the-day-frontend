@@ -9,6 +9,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
+  experimental: {
+    // Disable SSR for all pages
+    ssr: false,
+  },
 }
 
 module.exports = nextConfig 
