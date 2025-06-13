@@ -2,6 +2,7 @@ import { setupWorker } from 'msw/browser'
 import { handlers } from './handlers'
 
 console.log('MSW: Setting up browser worker with handlers:', handlers.length);
+console.log('MSW: Handlers:', handlers);
 
 export const worker = setupWorker(...handlers)
 

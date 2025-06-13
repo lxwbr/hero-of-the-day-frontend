@@ -1,7 +1,7 @@
 import { MantineProvider, ColorSchemeScript } from '@mantine/core'
 import '@mantine/core/styles.css'
 import './globals.css'
-import MSWInit from './msw-client-init'
+import MSWInit from './msw-init'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
