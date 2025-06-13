@@ -1,6 +1,7 @@
 import { MantineProvider, ColorSchemeScript } from '@mantine/core'
 import '@mantine/core/styles.css'
 import './globals.css'
+import MSWInit from './msw-client-init'
 
 export const metadata = {
   title: 'Hello World',
@@ -18,6 +19,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
+        <MSWInit />
         <MantineProvider>
           {children}
         </MantineProvider>

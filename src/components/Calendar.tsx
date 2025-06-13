@@ -17,7 +17,23 @@ export function Calendar() {
 
   // Load assignments on mount
   useEffect(() => {
-    getAssignments().then(setAssignments)
+    // Wait a bit for MSW to initialize in development
+    const loadAssignments = async () => {
+      try {
+        // Small delay to ensure MSW is ready in development
+        if (process.env.NODE_ENV === 'development') {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        const data = await getAssignments();
+        setAssignments(data);
+      } catch (error) {
+        console.error('Failed to load assignments:', error);
+        // In development, if MSW fails, we can still work with empty assignments
+        setAssignments({});
+      }
+    };
+    
+    loadAssignments();
   }, [])
 
   // Get the first day of the month and the number of days
