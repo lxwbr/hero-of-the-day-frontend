@@ -1,13 +1,24 @@
 'use client'
 
-import { useState } from 'react'
-import { Title, Text, Box } from '@mantine/core'
+import { useState, useEffect } from 'react'
+import { Title, Text, Box, Modal, TextInput, Button, Group } from '@mantine/core'
 import dayjs from 'dayjs'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+dayjs.extend(isSameOrBefore)
+import { getAssignments, addAssignment, removeAssignment } from '@/utils/assignmentsApi'
 
 export function Calendar() {
   const [currentDate, setCurrentDate] = useState(dayjs())
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [email, setEmail] = useState('')
+  const [assignments, setAssignments] = useState<{ [date: string]: string[] }>({})
+
+  // Load assignments on mount
+  useEffect(() => {
+    getAssignments().then(setAssignments)
+  }, [])
 
   // Get the first day of the month and the number of days
   const firstDayOfMonth = currentDate.startOf('month')
@@ -32,11 +43,20 @@ export function Calendar() {
 
   const calendarDays = generateCalendarDays()
 
+  // For each assignment, track its spans independently
+  type AssignmentEntry = { date: string, name: string, dayjs: dayjs.Dayjs }
+  const assignmentEntries: AssignmentEntry[] = []
+  Object.entries(assignments).forEach(([date, names]) => {
+    names.forEach(name => {
+      assignmentEntries.push({ date, name, dayjs: dayjs(date) })
+    })
+  })
+  assignmentEntries.sort((a, b) => a.dayjs.valueOf() - b.dayjs.valueOf())
+
   const handleDayClick = (day: number) => {
     const clickedDate = currentDate.date(day)
     setSelectedDate(clickedDate)
-    // TODO: Add label functionality here
-    console.log('Clicked on:', clickedDate.format('YYYY-MM-DD'))
+    setModalOpen(true)
   }
 
   const goToPreviousMonth = () => {
@@ -47,10 +67,54 @@ export function Calendar() {
     setCurrentDate(currentDate.add(1, 'month'))
   }
 
+  // Modal form submit handler
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (selectedDate && email) {
+      const dateKey = selectedDate.format('YYYY-MM-DD')
+      const name = email.split('@')[0]
+      addAssignment(dateKey, name).then(setAssignments)
+    }
+    setModalOpen(false)
+    setEmail('')
+  }
+
+  // Remove assignment for a given date and name
+  const handleRemoveAssignment = (dateKey: string, name: string) => {
+    removeAssignment(dateKey, name).then(setAssignments)
+  }
+
   // Fixed header and day header heights
   const HEADER_HEIGHT = 90
   const DAY_HEADER_HEIGHT = 40
   const GRID_GAP = 12 // px
+
+  // Generate a stable, matte color from a string (name)
+  function getMatteColorFromName(name: string) {
+    // Hash the name to a number
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    // Generate HSL values: hue from hash, fixed low saturation, fixed lightness
+    const hue = Math.abs(hash) % 360;
+    const saturation = 32; // matte, not too vibrant
+    const lightness = 68; // matte, not too dark or light
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
+
+  // Helper to get a more contrasting color for faded label text
+  function getMatteTextColorFromName(name: string) {
+    // Use the same hue, but higher saturation and lower lightness for more contrast
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = Math.abs(hash) % 360;
+    const saturation = 44; // more saturated
+    const lightness = 32; // darker
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
 
   return (
     <Box
@@ -69,6 +133,39 @@ export function Calendar() {
         boxSizing: 'border-box',
       }}
     >
+      {/* Modal for email input */}
+      <Modal
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={selectedDate ? selectedDate.format('D MMMM YYYY') : 'Select a day'}
+        centered
+        overlayProps={{ backgroundOpacity: 0.55, blur: 3 }}
+        styles={{
+          content: { background: '#23272f', color: '#e0e0e0' },
+          header: { background: '#23272f', color: '#e0e0e0' },
+          body: { background: '#23272f', color: '#e0e0e0' },
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          <TextInput
+            label="Email address"
+            placeholder="your@email.com"
+            value={email}
+            onChange={e => setEmail(e.currentTarget.value)}
+            required
+            type="email"
+            autoFocus
+          />
+          <Group justify="flex-end" mt="md">
+            <Button variant="default" onClick={() => setModalOpen(false)} type="button">
+              Cancel
+            </Button>
+            <Button type="submit" style={{ background: '#4EA37D', color: '#fff' }}>
+              Submit
+            </Button>
+          </Group>
+        </form>
+      </Modal>
       {/* Header */}
       <Box style={{
         display: 'grid',
@@ -169,6 +266,34 @@ export function Calendar() {
       >
         {calendarDays.map((day, idx) => {
           const isHovered = hoveredIdx === idx
+          let dateKey: string | undefined
+          let assignmentsForDay: { name: string, isStart: boolean }[] = []
+          if (day) {
+            const d = currentDate.date(day)
+            dateKey = d.format('YYYY-MM-DD')
+            // Find all assignments that start on this day
+            const startingToday = assignmentEntries.filter(e => e.dayjs.isSame(d, 'day'))
+            if (startingToday.length > 0) {
+              // If any assignments start today, show only those (all as isStart)
+              assignmentsForDay = startingToday.map(e => ({ name: e.name, isStart: true }))
+            } else {
+              // Otherwise, propagate all assignments that started most recently before this day
+              // Find the latest start date on or before this day
+              let latestDay: dayjs.Dayjs | undefined = undefined
+              for (const entry of assignmentEntries) {
+                if (entry.dayjs.isSameOrBefore(d, 'day')) {
+                  if (!latestDay || entry.dayjs.isAfter(latestDay)) {
+                    latestDay = entry.dayjs
+                  }
+                }
+              }
+              if (latestDay) {
+                // Find all assignments that started on latestDay
+                const latestAssignments = assignmentEntries.filter(e => e.dayjs.isSame(latestDay, 'day'))
+                assignmentsForDay = latestAssignments.map(e => ({ name: e.name, isStart: false }))
+              }
+            }
+          }
           return (
             <Box
               key={idx}
@@ -211,6 +336,59 @@ export function Calendar() {
                   {String(day).padStart(2, '0')}
                 </Text>
               )}
+              {assignmentsForDay.map(({ name, isStart }, i) => (
+                <Box
+                  key={name}
+                  style={{
+                    position: 'absolute',
+                    left: 10,
+                    top: 14 + i * 28, // stack vertically
+                    background: isStart
+                      ? getMatteColorFromName(name)
+                      : 'rgba(240,240,240,0.92)',
+                    color: isStart
+                      ? '#fff'
+                      : getMatteTextColorFromName(name),
+                    borderRadius: 4,
+                    padding: '1px 6px 1px 6px',
+                    fontWeight: 700,
+                    fontSize: '0.82rem',
+                    zIndex: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    boxShadow: isStart ? '0 1px 4px 0 rgba(0,0,0,0.04)' : 'none',
+                    pointerEvents: 'auto',
+                    minWidth: 0,
+                    border: isStart ? 'none' : `1.5px dashed ${getMatteColorFromName(name)}`,
+                  }}
+                >
+                  <span style={{ fontWeight: 700, color: isStart ? '#fff' : getMatteTextColorFromName(name), fontSize: '0.82rem' }}>{name}</span>
+                  {isStart && (
+                    <button
+                      type="button"
+                      aria-label="Remove assignment"
+                      onClick={e => {
+                        e.stopPropagation();
+                        if (dateKey) handleRemoveAssignment(dateKey, name)
+                      }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#fff',
+                        fontWeight: 400,
+                        fontSize: '0.95rem',
+                        marginLeft: 1,
+                        cursor: 'pointer',
+                        lineHeight: 1,
+                        padding: 0,
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </Box>
+              ))}
             </Box>
           )
         })}
