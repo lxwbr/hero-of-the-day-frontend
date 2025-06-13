@@ -7,7 +7,11 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 dayjs.extend(isSameOrBefore)
 import { getAssignments, addAssignment, removeAssignment } from '@/utils/assignmentsApi'
 
-export function Calendar() {
+interface CalendarProps {
+  hero: string
+}
+
+export function Calendar({ hero }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(dayjs())
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
@@ -24,7 +28,7 @@ export function Calendar() {
         if (process.env.NODE_ENV === 'development') {
           await new Promise(resolve => setTimeout(resolve, 100));
         }
-        const data = await getAssignments();
+        const data = await getAssignments(hero);
         setAssignments(data);
       } catch (error) {
         console.error('Failed to load assignments:', error);
@@ -34,7 +38,7 @@ export function Calendar() {
     };
     
     loadAssignments();
-  }, [])
+  }, [hero])
 
   // Get the first day of the month and the number of days
   const firstDayOfMonth = currentDate.startOf('month')
@@ -89,7 +93,7 @@ export function Calendar() {
     if (selectedDate && email) {
       const dateKey = selectedDate.format('YYYY-MM-DD')
       const name = email.split('@')[0]
-      addAssignment(dateKey, name).then(setAssignments)
+      addAssignment(hero, dateKey, name).then(setAssignments)
     }
     setModalOpen(false)
     setEmail('')
@@ -97,11 +101,10 @@ export function Calendar() {
 
   // Remove assignment for a given date and name
   const handleRemoveAssignment = (dateKey: string, name: string) => {
-    removeAssignment(dateKey, name).then(setAssignments)
+    removeAssignment(hero, dateKey, name).then(setAssignments)
   }
 
   // Fixed header and day header heights
-  const HEADER_HEIGHT = 90
   const DAY_HEADER_HEIGHT = 40
   const GRID_GAP = 12 // px
 
@@ -187,11 +190,10 @@ export function Calendar() {
         display: 'grid',
         gridTemplateColumns: '80px 1fr 80px',
         alignItems: 'center',
-        height: HEADER_HEIGHT,
-        padding: 0,
-        margin: 0,
+        padding: '0.25rem 0',
+        margin: 3,
       }}>
-        <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '100%' }}>
+        <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <button
             onClick={goToPreviousMonth}
             style={{
@@ -201,15 +203,26 @@ export function Calendar() {
               cursor: 'pointer',
               color: '#e0e0e0',
               marginRight: '1rem',
+              padding: 0,
+              height: 'auto',
             }}
           >
             ←
           </button>
         </Box>
-        <Title order={2} style={{ color: '#e0e0e0', fontWeight: 600, letterSpacing: 1, margin: 0, textAlign: 'center', width: '100%' }}>
+        <Title order={2} style={{
+          color: '#e0e0e0',
+          fontWeight: 600,
+          letterSpacing: 1,
+          margin: 0,
+          textAlign: 'center',
+          width: '100%',
+          fontSize: '1.25rem',
+          lineHeight: 1.2,
+        }}>
           {currentDate.format('MMMM YYYY')}
         </Title>
-        <Box style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100%' }}>
+        <Box style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
           <button
             onClick={goToNextMonth}
             style={{
@@ -219,6 +232,8 @@ export function Calendar() {
               cursor: 'pointer',
               color: '#e0e0e0',
               marginLeft: '1rem',
+              padding: 0,
+              height: 'auto',
             }}
           >
             →
@@ -267,9 +282,9 @@ export function Calendar() {
           gridTemplateRows: 'repeat(6, 1fr)',
           gridTemplateColumns: 'repeat(7, 1fr)',
           width: '100vw',
-          height: `calc(100vh - ${HEADER_HEIGHT + DAY_HEADER_HEIGHT}px)`,
+          height: `calc(100vh - ${DAY_HEADER_HEIGHT}px)`,
           maxWidth: '100vw',
-          maxHeight: `calc(100vh - ${HEADER_HEIGHT + DAY_HEADER_HEIGHT}px)`,
+          maxHeight: `calc(100vh - ${DAY_HEADER_HEIGHT}px)`,
           margin: 0,
           padding: 0,
           borderBottom: '2px solid #E8E8E8',

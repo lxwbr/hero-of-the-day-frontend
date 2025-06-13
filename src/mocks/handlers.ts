@@ -6,18 +6,20 @@ let assignments: { [date: string]: string[] } = {}
 console.log('MSW: Handlers file loaded, setting up handlers...');
 
 export const handlers = [
-  // Get all assignments
-  http.get('/api/assignments', () => {
-    console.log('MSW: GET /api/assignments called, returning:', assignments);
+  // Get all assignments for a hero
+  http.get('http://localhost:3000/schedule/:hero', ({ params }) => {
+    const { hero } = params;
+    console.log('MSW: GET /schedule/:hero called for hero:', hero, 'returning:', assignments);
     return HttpResponse.json(assignments)
   }),
 
-  // Add assignment
-  http.post('/api/assignments', async ({ request }) => {
-    console.log('MSW: POST /api/assignments called');
+  // Add assignment for a hero
+  http.post('http://localhost:3000/schedule/:hero', async ({ request, params }) => {
+    const { hero } = params;
+    console.log('MSW: POST /schedule/:hero called for hero:', hero);
     try {
       const { date, name } = await request.json() as { date: string, name: string }
-      console.log('MSW: Adding assignment:', { date, name });
+      console.log('MSW: Adding assignment for hero:', hero, 'date:', date, 'name:', name);
       if (!assignments[date]) assignments[date] = []
       if (!assignments[date].includes(name)) {
         assignments[date].push(name)
@@ -30,12 +32,13 @@ export const handlers = [
     }
   }),
 
-  // Remove assignment
-  http.delete('/api/assignments', async ({ request }) => {
-    console.log('MSW: DELETE /api/assignments called');
+  // Remove assignment for a hero
+  http.delete('http://localhost:3000/schedule/:hero', async ({ request, params }) => {
+    const { hero } = params;
+    console.log('MSW: DELETE /schedule/:hero called for hero:', hero);
     try {
       const { date, name } = await request.json() as { date: string, name: string }
-      console.log('MSW: Removing assignment:', { date, name });
+      console.log('MSW: Removing assignment for hero:', hero, 'date:', date, 'name:', name);
       if (assignments[date]) {
         assignments[date] = assignments[date].filter((n) => n !== name)
         if (assignments[date].length === 0) {
