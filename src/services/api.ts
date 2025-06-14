@@ -31,6 +31,7 @@ export const heroApi = {
     
     // In development mode, if no API URL is configured, use mock data immediately
     if (isDevelopment && !baseURL) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       console.log('Development mode: No API URL configured, using mock data');
       return mockHeroes;
     }

@@ -47,8 +47,12 @@ export function HeroList({ userEmail }: HeroListProps) {
 
   if (loading) {
     return (
-      <Box style={{ position: 'relative', minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Loading heroes...</Text>
+      <Box style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <LoadingOverlay 
+          visible={true} 
+          loaderProps={{ color: 'green', type: 'bars' }}
+          overlayProps={{ color: '#23272f', opacity: 0.8 }}
+        />
       </Box>
     );
   }
