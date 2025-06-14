@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.13.1",
+    "@azure/msal-react": "^3.0.12",
     "@emotion/react": "^11.14.0",
     "@mantine/core": "^8.1.0",
     "@mantine/hooks": "^8.1.0",
