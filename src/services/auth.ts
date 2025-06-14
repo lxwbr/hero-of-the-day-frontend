@@ -4,7 +4,7 @@ import { PublicClientApplication, Configuration, AccountInfo, AuthenticationResu
 const msalConfig: Configuration = {
   auth: {
     clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID || '',
-    authority: `https://login.microsoftonline.com/${process.env.NEXT_PUBLIC_AZURE_TENANT_ID || 'common'}`,
+    authority: process.env.NEXT_PUBLIC_AZURE_TENANT_ID || 'https://login.microsoftonline.com/common',
     redirectUri: typeof window !== 'undefined' ? window.location.origin : '',
   },
   cache: {
@@ -12,6 +12,15 @@ const msalConfig: Configuration = {
     storeAuthStateInCookie: false,
   },
 };
+
+// Validate configuration
+if (!process.env.NEXT_PUBLIC_AZURE_CLIENT_ID) {
+  console.error('NEXT_PUBLIC_AZURE_CLIENT_ID is not set. Please check your .env.local file.');
+}
+
+if (!process.env.NEXT_PUBLIC_AZURE_TENANT_ID) {
+  console.warn('NEXT_PUBLIC_AZURE_TENANT_ID is not set. Using "common" tenant.');
+}
 
 // Scopes for Microsoft Graph API
 const loginRequest = {
