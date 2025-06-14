@@ -1,17 +1,43 @@
-import { PublicClientApplication, Configuration, AccountInfo, AuthenticationResult } from '@azure/msal-browser';
+import { PublicClientApplication, Configuration, AccountInfo, AuthenticationResult, LogLevel } from '@azure/msal-browser';
 
 // Microsoft Azure AD configuration
 const msalConfig: Configuration = {
   auth: {
     clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID || '',
     authority: process.env.NEXT_PUBLIC_AZURE_TENANT_ID 
-      ? `${process.env.NEXT_PUBLIC_AZURE_TENANT_ID}/v2.0`
-      : 'https://login.microsoftonline.com/common/v2.0',
+      ? `${process.env.NEXT_PUBLIC_AZURE_TENANT_ID}`
+      : 'https://login.microsoftonline.com/common',
     redirectUri: typeof window !== 'undefined' ? window.location.origin : '',
   },
   cache: {
     cacheLocation: 'sessionStorage',
     storeAuthStateInCookie: false,
+  },
+  system: {
+    loggerOptions: {
+      loggerCallback: (level, message, containsPii) => {
+        if (containsPii) {
+          return;
+        }
+        switch (level) {
+          case LogLevel.Error:
+            console.error(message);
+            return;
+          case LogLevel.Info:
+            console.info(message);
+            return;
+          case LogLevel.Verbose:
+            console.debug(message);
+            return;
+          case LogLevel.Warning:
+            console.warn(message);
+            return;
+          default:
+            return;
+        }
+      },
+      piiLoggingEnabled: false,
+    },
   },
 };
 
@@ -26,7 +52,7 @@ if (!process.env.NEXT_PUBLIC_AZURE_TENANT_ID) {
 
 // Scopes for Microsoft Graph API
 const loginRequest = {
-  scopes: ['User.Read', 'email', 'profile'],
+  scopes: ['user.read'],
 };
 
 // Create MSAL instance
@@ -112,6 +138,17 @@ export class AuthService {
       };
 
       const result = await msalInstance.acquireTokenSilent(silentRequest);
+
+      // Decode the token (client-side for inspection)
+      const [header, payload, signature] = result.accessToken.split('.');
+      const decodedPayload = JSON.parse(atob(payload)); // `atob` is a browser function for base64 decoding
+
+      console.log("Decoded Token Payload:", decodedPayload);
+      console.log("header:", header);
+      console.log("signature:", signature);
+      console.log("Audience (aud):", decodedPayload.aud);
+      console.log("decodedPayload:", JSON.stringify(decodedPayload));
+
       return result.accessToken;
     } catch (error) {
       console.error('Error acquiring token:', error);
