@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // Hero type definition
 export interface Hero {
   name: string;
@@ -23,6 +25,14 @@ const mockHeroes: Hero[] = [
 // Check if we're in development mode
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+// Create axios instance with default config
+const apiClient = axios.create({
+  timeout: 10000, // 10 second timeout
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 // Minimal hero API service
 export const heroApi = {
   // Get all heroes
@@ -31,7 +41,6 @@ export const heroApi = {
     
     // In development mode, if no API URL is configured, use mock data immediately
     if (isDevelopment && !baseURL) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
       console.log('Development mode: No API URL configured, using mock data');
       return mockHeroes;
     }
@@ -40,20 +49,21 @@ export const heroApi = {
     const apiURL = baseURL || 'http://localhost:8080';
     
     try {
-      const response = await fetch(`${apiURL}/hero/list`);
+      const response = await apiClient.get(`${apiURL}/hero/list`);
+      return response.data;
+    } catch (error: unknown) {
+      console.error('API request failed:', error);
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      return response.json();
-    } catch (error) {
       if (isDevelopment) {
-        console.warn('API not available in development mode, using mock data:', error);
+        console.warn('API not available in development mode, using mock data');
         return mockHeroes;
       } else {
         // In production, re-throw the error
-        throw error;
+        if (axios.isAxiosError(error)) {
+          throw new Error(`Failed to fetch heroes: ${error.message}`);
+        } else {
+          throw new Error(`Failed to fetch heroes: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
       }
     }
   },
