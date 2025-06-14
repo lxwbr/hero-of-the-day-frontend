@@ -4,7 +4,9 @@ import { PublicClientApplication, Configuration, AccountInfo, AuthenticationResu
 const msalConfig: Configuration = {
   auth: {
     clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID || '',
-    authority: process.env.NEXT_PUBLIC_AZURE_TENANT_ID || 'https://login.microsoftonline.com/common',
+    authority: process.env.NEXT_PUBLIC_AZURE_TENANT_ID 
+      ? `${process.env.NEXT_PUBLIC_AZURE_TENANT_ID}/v2.0`
+      : 'https://login.microsoftonline.com/common/v2.0',
     redirectUri: typeof window !== 'undefined' ? window.location.origin : '',
   },
   cache: {
