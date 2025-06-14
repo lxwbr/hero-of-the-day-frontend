@@ -1,93 +1,124 @@
-# Hello World - Next.js + TypeScript + Mantine
+# Hero of the Day Frontend
 
-A simple web application built with Next.js, TypeScript, and Mantine UI.
+A minimal SPA (Single Page Application) built with modern React technologies.
 
-## 🚀 Technology Stack
+## Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **UI Library**: Mantine v7
-- **Styling**: Tailwind CSS
+- ⚛️ **React 19** - Latest React with modern features
+- ⚡ **Vite** - Fast development and building
+- 🛣️ **React Router** - Client-side routing
+- 🗃️ **Zustand** - Lightweight state management
+- 🌐 **Axios** - HTTP client for API requests
+- 🎨 **Tailwind CSS** - Utility-first CSS framework
+- 📝 **TypeScript** - Type safety and better DX
 
-## 📋 Prerequisites
+## Features
+
+- 🚀 **Fast Development** - Hot module replacement with Vite
+- 📱 **Responsive Design** - Mobile-first with Tailwind CSS
+- 🔄 **State Management** - Global state with Zustand
+- 🌍 **API Integration** - HTTP requests with Axios
+- 🛣️ **Client-side Routing** - Navigation with React Router
+- 🎯 **Type Safety** - Full TypeScript support
+
+## Getting Started
+
+### Prerequisites
 
 - Node.js 18+ 
-- npm or yarn package manager
+- npm or yarn
 
-## 🛠️ Installation
+### Installation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd hero-of-the-day-frontend
-```
-
-2. Install dependencies:
+1. Install dependencies:
 ```bash
 npm install
 # or
 yarn install
 ```
 
-3. Start the development server:
+2. Start development server:
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📁 Project Structure
-
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Root layout with Mantine provider
-│   ├── page.tsx           # Hello World page
-│   └── globals.css        # Global styles
-└── components/            # Reusable components (empty for now)
-```
-
-## 📝 Available Scripts
+## Available Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
-- `npm run start` - Start production server
+- `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript type checking
 
-## 🎯 Features
+## Project Structure
 
-- **Simple Setup**: Minimal configuration for quick development
-- **Type Safety**: Full TypeScript support
-- **Modern UI**: Built with Mantine v7 components
-- **Responsive Design**: Mobile-first approach
+```
+├── src/
+│   ├── components/
+│   │   └── Layout.tsx          # Main layout with navigation
+│   ├── pages/
+│   │   ├── Home.tsx            # Home page with examples
+│   │   └── About.tsx           # About page
+│   ├── stores/
+│   │   └── counterStore.ts     # Zustand store example
+│   ├── services/
+│   │   └── api.ts              # Axios API service
+│   ├── App.tsx                 # Main app component
+│   ├── main.tsx                # Entry point
+│   └── index.css               # Global styles with Tailwind
+├── public/                     # Static assets
+├── index.html                  # HTML template
+├── vite.config.ts              # Vite configuration
+├── tailwind.config.js          # Tailwind CSS configuration
+├── tsconfig.json               # TypeScript configuration
+└── package.json
+```
 
-## 🚀 Deployment
+## Key Features Demonstrated
 
-### Vercel (Recommended)
+### State Management (Zustand)
+- Global counter state
+- Actions for increment, decrement, and reset
+- Reactive updates across components
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy automatically
+### API Integration (Axios)
+- HTTP client with interceptors
+- Error handling and logging
+- Example API call to JSONPlaceholder
 
-### Other Platforms
+### Routing (React Router)
+- Client-side navigation
+- Nested routes with layout
+- Link components for navigation
 
-The project can be deployed to any platform that supports Next.js:
+### Styling (Tailwind CSS)
+- Utility-first CSS classes
+- Responsive design
+- Modern UI components
 
-- Netlify
-- AWS Amplify
-- Railway
-- DigitalOcean App Platform
+## Development
 
-## 📚 Resources
+The project uses:
+- **Vite** for fast development and building
+- **ESLint** for code linting
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Mantine Documentation](https://mantine.dev/)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+## Building for Production
 
-## 📄 License
+```bash
+npm run build
+```
 
-This project is licensed under the MIT License. 
+This creates a `dist` folder with optimized production files.
+
+## Preview Production Build
+
+```bash
+npm run preview
+```
+
+This serves the production build locally for testing. 
