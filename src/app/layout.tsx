@@ -1,32 +1,23 @@
-import { MantineProvider, ColorSchemeScript } from '@mantine/core'
-import '@mantine/core/styles.css'
-import './globals.css'
-import MSWInit from './msw-init'
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
-export const metadata = {
-  title: 'Hello World',
-  description: 'A simple Next.js application',
-}
+import "./globals.css";
+import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
+import { theme } from './theme';
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <head>
-        <ColorSchemeScript />
-      </head>
       <body>
-        <MSWInit />
-        <MantineProvider>
+        <MantineProvider
+          defaultColorScheme="dark"
+          theme={theme}
+        >
           {children}
         </MantineProvider>
       </body>
     </html>
-  )
-} 
+  );
+}

@@ -1,8 +1,5 @@
-import { HeroList } from '@/components/HeroList'
+import { HeroList } from '@/components/hero-list/List'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
-export default function HomePage() {
-  return <HeroList />
-} 
+export default function Home() {
+  return <HeroList />;
+}
