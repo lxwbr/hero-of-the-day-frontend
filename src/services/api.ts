@@ -27,7 +27,7 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 export const heroApi = {
   // Get all heroes
   getHeroes: async (): Promise<Hero[]> => {
-    const baseURL = process.env.REACT_APP_API_URL;
+    const baseURL = process.env.NEXT_PUBLIC_API_URL;
     
     // In development mode, if no API URL is configured, use mock data immediately
     if (isDevelopment && !baseURL) {
